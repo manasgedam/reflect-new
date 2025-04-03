@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  name            String?
+  email           String         @unique
+  emailVerified   DateTime?
+  image           String?
+  password        String?
+  role            String         @default("user")
+  isEmailVerified Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  Account         Account[]
+  formResponse    FormResponse[]
+  forms           Form[]
+}
+
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+enum QuestionType {
+  TEXT
+  MULTIPLE_CHOICE
+  SENTIMENT
+  VIDEO
+}
+
+model Form {
+  id          String         @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String?
+  image       String?
+  userId      String         @db.ObjectId
+  user        User           @relation(fields: [userId], references: [id])
+  questions   Question[]
+  responses   FormResponse[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
+
+model Question {
+  id                    String             @id @default(auto()) @map("_id") @db.ObjectId
+  formId                String             @db.ObjectId
+  form                  Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
+  text                  String
+  type                  QuestionType
+  isRequired            Boolean            @default(false)
+  multipleChoiceOptions String[] // For multiple choice questions
+  image                 String?
+  responses             QuestionResponse[]
+}
+
+model FormResponse {
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId
+  formId    String             @db.ObjectId
+  form      Form               @relation(fields: [formId], references: [id], onDelete: Cascade)
+  userId    String             @db.ObjectId
+  user      User               @relation(fields: [userId], references: [id])
+  createdAt DateTime           @default(now())
+  responses QuestionResponse[]
+}
+
+model QuestionResponse {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  formResponseId String       @db.ObjectId
+  formResponse   FormResponse @relation(fields: [formResponseId], references: [id], onDelete: Cascade)
+  questionId     String       @db.ObjectId
+  question       Question     @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  textResponse   String?
+  sentimentScore Float? // For sentiment analysis
+  sentimentLabel String? // e.g., "positive", "negative", "neutral"
+  selectedOption String? // For multiple choice questions
+}
