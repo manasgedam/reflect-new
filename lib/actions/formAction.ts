@@ -55,7 +55,7 @@ export async function createForm(formData: FormData) {
               isRequired: question.required || false,
               image: question.image || null,
               multipleChoiceOptions: type === QuestionType.MULTIPLE_CHOICE 
-                ? question.options?.map(option => option.text).filter(Boolean) || []
+                ? question.options?.map((option: { text: any; }) => option.text).filter(Boolean) || []
                 : [],
             };
           }),

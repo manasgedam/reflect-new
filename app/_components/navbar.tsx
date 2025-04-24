@@ -56,9 +56,9 @@ export default async function Navbar() {
                   <AvatarImage src="/images/avatar.png" alt="User avatar" />
                   <AvatarFallback>
                     <Image
-                      src={session?.user?.image || "https://github.com/shadcn.png"}
-                      width={80}
-                      height={80}
+                      src={session?.user?.image || "/images/avatar.png"}
+                      width={60}
+                      height={60}
                       alt="User avatar"
                       draggable={false}
                     />
@@ -82,7 +82,7 @@ export default async function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Link href="/auth/signin"><Button>Sign in</Button></Link>
+            <Link href="/auth/signin"><Button >Sign in</Button></Link>
           )}
         </div>
       </div>

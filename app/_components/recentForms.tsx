@@ -9,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import {
-  PlusCircle, 
+  PlusCircle,
   Search,
   Filter,
   MoreVertical,
@@ -25,41 +25,46 @@ import Image from "next/image"
 import { toast, Toaster } from "sonner"
 
 // Form interface for type safety
-  interface Form {
-    id: string
-    title: string
-    responses: number
-    updatedAt: string
-    createdAt: string
-    description?: string
-  }
+interface Form {
+  id: string
+  title: string
+  responses: number
+  updatedAt: string
+  createdAt: string
+  description?: string
+}
 
 // Mock data for form templates
 const formTemplates = [
-  { id: 0, title: "Blank Form", description: "Start from scratch", image: "/placeholder.svg?height=100&width=200" },
+  { 
+    id: 0,
+    title: "Blank Form",
+    description: "Start from scratch",
+    image: "/images/placeholder.svg"
+  },
   {
     id: 1,
     title: "Customer Feedback",
     description: "Gather insights from your customers",
-    image: "/placeholder.svg?height=100&width=200",
+    image: "/images/placeholder.svg?height=100&width=200",
   },
   {
     id: 2,
     title: "Event Registration",
     description: "Collect attendee information for your event",
-    image: "/placeholder.svg?height=100&width=200",
+    image: "/images/placeholder.svg?height=100&width=200",
   },
   {
     id: 3,
     title: "Job Application",
     description: "Streamline your hiring process",
-    image: "/placeholder.svg?height=100&width=200",
+    image: "/images/placeholder.svg?height=100&width=200",
   },
   {
     id: 4,
     title: "Quiz Template",
     description: "Create engaging quizzes for various purposes",
-    image: "/placeholder.svg?height=100&width=200",
+    image: "/images/placeholder.svg?height=100&width=200",
   },
 ]
 
@@ -201,14 +206,13 @@ export default function RecentForms() {
           {formTemplates.map((template) => (
             <Card
               key={template.id}
-              className={`cursor-pointer transition-all duration-300 hover:shadow-md ${
-                selectedTemplate === template.id ? "ring-2 ring-primary" : "hover:border-primary/50"
-              }`}
+              className={`cursor-pointer transition-all duration-300 hover:shadow-md ${selectedTemplate === template.id ? "ring-2 ring-primary" : "hover:border-primary/50"
+                }`}
               onClick={() => handleTemplateSelect(template.id)}
             >
               <CardHeader className="p-0">
                 <Image
-                  src={template.image || "/placeholder.svg"}
+                  src={template.image || "/images/placeholder.svg"}
                   alt={template.title}
                   width={200}
                   height={100}

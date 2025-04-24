@@ -1,7 +1,13 @@
-import FormBuilder from "@/app/_components/formBuilder";
+"use client";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-export default function page() {
-    return (
-        <FormBuilder />
-    )
+export default function EditFormIndex() {
+    const router = useRouter();
+
+    useEffect(() => {
+        router.push("/form-builder/0");
+    }, [router]);
+
+    return null;
 }

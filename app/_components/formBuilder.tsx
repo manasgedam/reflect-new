@@ -101,7 +101,7 @@ export default function FormBuilder() {
     }
 
     if (type === "multiple_choice") {
-      ;(newQuestion as any).options = ["Option 1"]
+      ; (newQuestion as any).options = ["Option 1"]
     }
 
     setQuestions([...questions, newQuestion])
@@ -202,11 +202,7 @@ export default function FormBuilder() {
       setValidationErrors(errors)
 
       // Show toast with validation error
-      toast({
-        title: "Validation Error",
-        description: "Please fix the errors in your form before publishing.",
-        variant: "destructive",
-      })
+      toast.error("Please fix the errors in your form before publishing.")
 
       return false
     }
@@ -237,28 +233,20 @@ export default function FormBuilder() {
       if (result.success) {
         setIsPublished(true)
         setFormUrl(result.formUrl || "")
+        console.log(result);
 
         // Copy to clipboard
         clipboard.copy(result.formUrl || "")
 
-        toast({
-          title: "Form Published",
+        toast("Form Published", {
           description: "Your form has been published successfully.",
         })
       } else {
-        toast({
-          title: "Error",
-          description: result.message || "Failed to publish form",
-          variant: "destructive",
-        })
+        toast.error(result.message || "Failed to publish form");
       }
     } catch (error) {
       console.error("Error publishing form:", error)
-      toast({
-        title: "Error",
-        description: "An unexpected error occurred while publishing your form.",
-        variant: "destructive",
-      })
+      toast.error("An unexpected error occurred while publishing your form.");
     } finally {
       setIsSubmitting(false)
     }
@@ -268,8 +256,7 @@ export default function FormBuilder() {
     setIsPublished(false)
     setFormUrl("")
 
-    toast({
-      title: "Form Unpublished",
+    toast("Form Unpublished", {
       description: "Your form is no longer accessible to others.",
     })
   }
@@ -483,12 +470,12 @@ export default function FormBuilder() {
               )}
               <Card className="mb-8 shadow-lg border-primary/10">
                 <CardHeader>
-                  <CardTitle className="flex items-center justify-between">
+                  <CardTitle className="flex text-3xl items-center justify-between">
                     <div className="w-full">
                       <Input
                         value={formTitle}
                         onChange={(e) => setFormTitle(e.target.value)}
-                        className="text-8xl font-bold border-none focus-visible:ring-0 px-0"
+                        className="text-3xl! font-bold border-none focus-visible:ring-0 px-0"
                         placeholder="Enter form title"
                       />
                       {validationErrors.title && (
